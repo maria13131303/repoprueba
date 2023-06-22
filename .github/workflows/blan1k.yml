@@ -22,7 +22,7 @@ jobs:
       - name: Set version
         id: set_version
         run: |
-         pr_title="Android:v1.1.1"
+          pr_title="Android:v1.1.1"
           IFS=';'
           read -a pr_title_array <<< "$pr_title"
 
@@ -30,9 +30,10 @@ jobs:
             android_version=$(echo "${pr_title_array[0]#*v}" | grep -o '[0-9.]*')
 
             if [ -n "$android_version" ]; then
-              echo "version=$android_version" >> $GITHUB_ENV
+              echo "version=$android_version" >> output.txt
+              echo "::set-output name=version::$android_version"
             fi
+          else
+            echo "The PR name does not meet the standard"
+            exit 1
           fi
-
-          echo "The PR name does not meet the standard"
-          exit 1
