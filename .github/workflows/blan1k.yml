@@ -34,3 +34,25 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          
+  android-alpha-distribution:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Set version
+        id: set_version
+        run: |
+          pr_title="Android:v1.1.1"
+          IFS=';'
+          read -a pr_title_array <<< "$pr_title"
+
+          if [[ "${pr_title_array[0]}" =~ v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            android_version=$(echo "${pr_title_array[0]#*v}" | grep -o '[0-9.]*')
+
+            if [ -n "$android_version" ]; then
+              echo "version=$android_version" >> $GITHUB_ENV
+            fi
+          else
+            echo "The PR name does not meet the standard"
+            exit 1
+          fi
+      
