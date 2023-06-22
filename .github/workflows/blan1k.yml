@@ -31,8 +31,11 @@ jobs:
 
             if [ -n "$android_version" ]; then
              echo "version=$android_version" >> $GITHUB_OUTPUT
+             echo "version=$android_version" >> output.txt
             fi
           else
             echo "The PR name does not meet the standard"
             exit 1
           fi
+      - name: Show output
+        run: cat output.txt
