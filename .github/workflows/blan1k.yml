@@ -22,7 +22,7 @@ jobs:
       - name: Set version
         id: set_version
         run: |
-          pr_title="andRoid:v1.1.1"
+          pr_title="andRoid:v1.1.1assaas-ebaasasas"
           IFS=';'
           read -a pr_title_array <<< "$pr_title"
 
