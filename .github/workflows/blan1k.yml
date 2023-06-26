@@ -27,5 +27,6 @@ jobs:
 
       - name: Print output
         run: |
-          echo  "La version de Android es :" $GITHUB_ENV
-      
+          version=$(cat $GITHUB_OUTPUT | cut -d'=' -f2)
+          echo "La versión de Android es: $version"
+
