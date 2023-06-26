@@ -1,32 +1,29 @@
 on:
   pull_request:
-    types: [ closed ]
+    types: [closed]
     branches:
-    - 'main'
+      - 'main'
   workflow_dispatch:
+
 jobs:
   android-alpha-distribution:
     if: contains(github.event.pull_request.title, 'android') && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: alpha
     steps:
-     
       - name: Set version
         id: set_version
         run: |
           pr_title="${{ github.event.pull_request.title }}"
-           IFS=';'
-           android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
-
-          if [ -n "$android_version" ]; then
-            echo "version=$android_version" >> $GITHUB_OUTPUT
+          android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
+          if [[ -n "$android_version" ]]; then
+            echo "version=$android_version" >> $GITHUB_ENV
           else
             echo "The PR name does not contain a valid Android version"
             exit 1
           fi
-
+      
       - name: Print output
         run: |
-          version=$(cat $GITHUB_OUTPUT | cut -d'=' -f2)
+          version=$(echo "${{ env.version }}" | cut -d'=' -f2)
           echo "La versión de Android es: $version"
-
