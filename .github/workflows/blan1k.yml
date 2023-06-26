@@ -14,12 +14,12 @@ jobs:
       - name: Set version
         id: set_version
         run: |
-         pr_title="${{ github.event.pull_request.title }}"
+          pr_title="${{ github.event.pull_request.title }}"
            IFS=';'
            android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
 
           if [ -n "$android_version" ]; then
-            echo "version=$android_version" >> $GITHUB_ENV
+            echo "version=$android_version" >> $GITHUB_OUTPUT
           else
             echo "The PR name does not contain a valid Android version"
             exit 1
