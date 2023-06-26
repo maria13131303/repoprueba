@@ -15,7 +15,7 @@ jobs:
         id: set_version
         run: |
           pr_title="${{ github.event.pull_request.title }}"
-          android_version=$(echo "$pr_title" | grep -o -E -i 'android\s*:\s*v\s*[0-9]+\s*\.\s*[0-9]+\s*\.\s*[0-9]+' | grep -o -E '[0-9]+' | tr -d '[:space:]')
+          android_version=$(echo "$pr_title" | grep -o -E -i 'android\s*:\s*v\s*[0-9]+\s*\.\s*[0-9]+\s*\.\s*[0-9]+' | grep -o -E '[0-9]+' | head -n1 | tr -d '[:space:]')
           if [[ -n "$android_version" ]]; then
             echo "version=$android_version" >> $GITHUB_ENV
           else
