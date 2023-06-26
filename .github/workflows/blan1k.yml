@@ -1,39 +1,34 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    types: [ closed ]
+    branches:
+    - 'main'
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   android-alpha-distribution:
-      runs-on: ubuntu-latest
-      steps:
+    if: contains(github.event.pull_request.title, 'android') && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: alpha
+    steps:
+      - name: Getting the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Set version
         id: set_version
         run: |
-          pr_title="feature xxx ; andROid:v2.9.1.1.1.2.2alfa-beta;feature xyz"
-
-          android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
+         pr_title="${{ github.event.pull_request.title }}"
+           IFS=';'
+           android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
 
           if [ -n "$android_version" ]; then
             echo "version=$android_version" >> $GITHUB_OUTPUT
-            echo "version=$android_version" >> output.txt
           else
             echo "The PR name does not contain a valid Android version"
             exit 1
           fi
 
-  
-      - name: Show output
-        run: cat output.txt
+      - name: Print output
+        run: |
+          echo  "La version de Android es :" $GITHUB_OUTPUT
+      
