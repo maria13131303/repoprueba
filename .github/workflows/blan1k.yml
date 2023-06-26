@@ -22,7 +22,7 @@ jobs:
       - name: Set version
         id: set_version
         run: |
-          pr_title="feature xxx ; ANDROID:v2.9.1.1.1.2.2alfa-beta;feature xyz"
+          pr_title="feature xxx ; andROid:v2.9.1.1.1.2.2alfa-beta;feature xyz"
 
           android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
 
