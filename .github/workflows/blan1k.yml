@@ -7,7 +7,7 @@ on:
 
 jobs:
   android-alpha-distribution:
-    if: contains(tolower(github.event.pull_request.title), 'android') && github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.title | contains_ci('android') && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     environment: alpha
     steps:
