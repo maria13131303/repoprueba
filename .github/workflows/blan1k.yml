@@ -24,16 +24,16 @@ jobs:
         run: |
           pr_title="feature xxx ; andRoid:V1.1.1alfa-beta;feature xyz"
 
-          android_version=$(echo "$pr_title" | grep -o -E 'android:v[0-9]+\.[0-9]+\.[0-9]+[a-zA-Z-]*')
+          android_version=$(echo "$pr_title" | grep -o -E 'andRoid:V[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
 
           if [ -n "$android_version" ]; then
-            android_version=${android_version#*:}
             echo "version=$android_version" >> $GITHUB_OUTPUT
             echo "version=$android_version" >> output.txt
           else
             echo "The PR name does not contain a valid Android version"
             exit 1
           fi
+
   
       - name: Show output
         run: cat output.txt
