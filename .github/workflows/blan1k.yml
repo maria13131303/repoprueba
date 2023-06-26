@@ -19,7 +19,7 @@ jobs:
            android_version=$(echo "$pr_title" | grep -o -E -i 'android:v[0-9]+\.[0-9]+\.[0-9]+' | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
 
           if [ -n "$android_version" ]; then
-            echo "version=$android_version" >> $GITHUB_OUTPUT
+            echo "version=$android_version" >> $GITHUB_ENV
           else
             echo "The PR name does not contain a valid Android version"
             exit 1
