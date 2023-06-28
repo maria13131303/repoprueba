@@ -1,20 +1,15 @@
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - 'main'
   workflow_dispatch:
 
 jobs:
   android-alpha-distribution:
-    if:  ${{ contains(github.event.pull_request.title, 'ios') && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     environment: alpha
     steps:
       - name: Set version
         id: set_version
         run: |
-          pr_title="${{ github.event.pull_request.title }}"
+          pr_title="IOS: V 1. 1.2"
           android_version=$(echo "$pr_title" | grep -o -E -i 'ios\s*:\s*v\s*[0-9]+\s*\.\s*[0-9]+\s*\.\s*[0-9]+' | grep -o -E '[0-9]+\s*\.\s*[0-9]+\s*\.\s*[0-9]+' | tr -d '[:space:]')
 
 
