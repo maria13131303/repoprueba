@@ -22,7 +22,13 @@ jobs:
             echo "The PR name does not contain a valid Android version"
             exit 1
           fi
-      
+      - name: Comprobar valor de steps.set_version.outputs.version
+        run: |
+          echo "El valor de la variable 'version' es: '${{ steps.set_version.outputs.version }}'"
+    
+      - name: Leer contenido de $GITHUB_OUTPUT
+        run: |
+          cat $GITHUB_OUTPUT
       - name: Print output
         run: |
           echo "La versión de Android es: $version"
