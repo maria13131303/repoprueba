@@ -1,19 +1,21 @@
 on:
-   pull_request:
-    types: [closed]
+  push:
     branches:
-    - 'main'
-   workflow_dispatch:
-jobs:  
+      - main
+  workflow_dispatch:
+
+jobs:
   android-alpha-distribution:
-    if: ${{ contains(github.event.pull_request.title, '[ANDROID-') && github.event.pull_request.title matches '.*\\[ANDROID-[0-9]+\\.[0-9]+\\.[0-9]+\\].*' }}
-
-
-
     runs-on: ubuntu-latest
-    environment: alpha
     steps:
-      - name: Set version
-        id: set_version
+      - name: Get tag
+        id: get_latest_tag
         run: |
-            echo "Hola mundo"
+          git fetch --tags
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
+          echo "tag=$latest_tag" >> $GITHUB_ENV
+          
+      - name: Print tag output
+        run: |
+          echo "Latest tag: ${{ env.tag }}"
+
