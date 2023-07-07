@@ -23,7 +23,7 @@ jobs:
 
       - name: Display latest tag
         run: |
-          echo "Latest tag: $latest_tag"
+          echo "Latest tag: ${{ env.tag }}"
 
 
 
