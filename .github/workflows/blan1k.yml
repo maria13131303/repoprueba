@@ -8,14 +8,19 @@ jobs:
   android-alpha-distribution:
     runs-on: ubuntu-latest
     steps:
-      - name: Get tag
-        id: get_latest_tag
-        run: |
-          git fetch --tags
-          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
+     - name: Getting the repo
+       uses: actions/checkout@v3
+       with:
+        fetch-depth: 0
+     - name: Fetch tags
+       run: git fetch --tags
+
+     - name: Get latest tag
+       id: latest_tag
+       run: |
+         latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
           echo "tag=$latest_tag" >> $GITHUB_ENV
-          
-      - name: Print tag output
-        run: |
-          echo "Latest tag: ${{ env.tag }}"
+
+     - name: Display latest tag
+       run: echo "Latest tag: ${{ steps.latest_tag.outputs.tag }}"
 
