@@ -20,5 +20,9 @@ jobs:
        run: |
          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
           echo "tag=$latest_tag" >> $GITHUB_ENV
+     - name: Display latest tag
+       run: |
+        echo "Latest tag: ${{ env.latest_tag }}"
+
 
   
