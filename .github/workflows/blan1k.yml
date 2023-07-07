@@ -1,3 +1,9 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   android-alpha-distribution:
     runs-on: ubuntu-latest
@@ -18,7 +24,6 @@ jobs:
       - name: Display latest tag
         run: |
           echo "Latest tag: $latest_tag"
-
 
 
 
