@@ -1,32 +1,28 @@
 on:
   pull_request:
-    types: [ closed ]
     branches:
     - 'main'
   workflow_dispatch:
 jobs:
-  android-alpha-distribution:
-    if: ${{ contains(github.event.pull_request.title, '[ANDROID]') && github.event.pull_request.merged == true }}
+  android-beta-distribution:
+    if: ${{contains(github.event.pull_request.title, '[ANDROID-')  }}
     runs-on: ubuntu-latest
-    environment: alpha
+    environment: beta
     steps:
       - name: Getting the repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Fetch tags
-        run: git fetch --tags
-
-      - name: Get latest tag
-        id: latest_tag
+      - name: Validate name
+        id: extract_tag
         run: |
-           latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
-              echo "tag=$latest_tag" >> $GITHUB_ENV
-        
+          if [[ ${{ github.event.pull_request.title }} =~ \[ANDROID-([0-9])\.([0-9])\.([0-9])\] ]]; then
+            tag="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
+            echo "Valid [ANDROID-X.Y.Z] format found. Extracted tag: $tag"
+            echo "tag=$tag" >> $GITHUB_ENV
+          else
+            echo "Invalid [ANDROID-X.Y.Z] format"
+            exit 1
+          fi
       - name: Display latest tag
         run: |
-          echo "Latest tag: ${{ env.tag }}"
-
-
-
+          echo "Latest tag: ${{ env.extract_tag }}"
   
