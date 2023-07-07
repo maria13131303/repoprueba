@@ -1,12 +1,14 @@
 on:
-  push:
+  pull_request:
+    types: [ closed ]
     branches:
-      - main
+    - 'main'
   workflow_dispatch:
-
 jobs:
   android-alpha-distribution:
+    if: ${{ contains(github.event.pull_request.title, '[ANDROID]') && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
+    environment: alpha
     steps:
       - name: Getting the repo
         uses: actions/checkout@v3
@@ -20,6 +22,7 @@ jobs:
         run: |
            latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1 --first-parent main) --abbrev=0)
               echo "tag=$latest_tag" >> $GITHUB_ENV
+        
       - name: Display latest tag
         run: |
           echo "Latest tag: ${{ env.tag }}"
