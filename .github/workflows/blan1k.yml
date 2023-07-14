@@ -28,6 +28,6 @@ jobs:
   
       - name: Automate Tagging
         run: |
-          tag=${{ env.tag }}
+          tag="v${{ env.tag }}"
           git tag $tag
           git push origin $tag
