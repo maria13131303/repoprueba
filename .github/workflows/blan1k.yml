@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: beta
     steps:
-      - name: Getting the repo
-        uses: actions/checkout@v3
+    
       - name: Validate name
         id: extract_tag
         run: |
