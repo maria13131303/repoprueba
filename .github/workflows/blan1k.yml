@@ -26,3 +26,8 @@ jobs:
         run: |
           echo "Latest tag: ${{ env.extract_tag }}"
   
+      - name: Automate Tagging
+        run: |
+          tag=${{ env.tag }}
+          git tag $tag
+          git push origin $tag
